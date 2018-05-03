@@ -22,4 +22,6 @@ public class AISnake extends Snake {
     public void setTarget(Food target) {
         this.target = target;
     }
+
+
 }

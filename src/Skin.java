@@ -24,6 +24,8 @@ public class Skin {
         tail=new BufferedImage(100, 100,BufferedImage.TYPE_INT_RGB);
 
         Graphics2D headimg = head.createGraphics();
+        headimg.setColor(new Color(0,0,0,0));
+        headimg.fillRect(0,0,100,100);
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
@@ -31,10 +33,14 @@ public class Skin {
         headimg.fillOval(60,60,10,10);
 
         Graphics2D bodyimg = body.createGraphics();
+        bodyimg.setColor(new Color(0,0,0,0));
+        bodyimg.fillRect(0,0,100,100);
         bodyimg.setColor(color);
         bodyimg.fillOval(0,0,100,100);
 
         Graphics2D tailimg = tail.createGraphics();
+        tailimg.setColor(new Color(0,0,0,0));
+        tailimg.fillRect(0,0,100,100);
         tailimg.setColor(color);
         tailimg.fillOval(0,0,100,100);
 
@@ -50,6 +56,8 @@ public class Skin {
         tail=new BufferedImage(100, 100,BufferedImage.TYPE_INT_RGB);
 
         Graphics2D headimg = head.createGraphics();
+        headimg.setColor(new Color(0,0,0,0));
+        headimg.fillRect(0,0,100,100);
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
@@ -57,10 +65,16 @@ public class Skin {
         headimg.fillOval(60,60,10,10);
 
         Graphics2D bodyimg = body.createGraphics();
+        bodyimg.setColor(new Color(0,0,0,0));
+        bodyimg.fillRect(0,0,100,100);
         bodyimg.setColor(color);
         bodyimg.fillOval(0,0,100,100);
 
         Graphics2D tailimg = tail.createGraphics();
+
+        tailimg.setColor(new Color(0,0,0,0));
+        tailimg.fillRect(0,0,100,100);
+
         tailimg.setColor(color);
         tailimg.fillOval(0,0,100,100);
 

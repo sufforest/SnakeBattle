@@ -1,13 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
+
 /**
  * Created by zywang on 3/5/2018.
  */
-public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
+public class GamePanel extends JPanel implements MouseMotionListener,Runnable,KeyListener{
     public final static int WIDTH = 2000;
     public final static int HEIGHT = 2000;
     private Snake userSnake;
@@ -25,15 +28,16 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
     public static int dx=0;
     public static int dy=0;
 
-    public GamePanel(){
-        reborn=null;
-        userSnake = new Snake(WIDTH,HEIGHT);
+    public GamePanel() {
+        reborn = null;
+        userSnake = new Snake(WIDTH, HEIGHT);
         userSnake.setAI(false);
-        infoManager = new InfoManager(WIDTH,HEIGHT);
+        infoManager = new InfoManager(WIDTH, HEIGHT);
         infoManager.init();
         infoManager.join(userSnake);
-
     }
+
+
 
 
     //use to
@@ -140,5 +144,42 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
 
     }
 
+    @Override
+    public void keyTyped(KeyEvent e){
 
+    }
+
+
+    @Override
+    public void keyReleased(KeyEvent e){
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e){
+        Node head=userSnake.getHead();
+        double angle=head.getAngle();
+        double s=Math.sin(angle);
+        double c=Math.cos(angle);
+        double update=2*Math.PI*10/360;
+        if(e.getKeyCode()==KeyEvent.VK_UP||e.getKeyChar()=='w'){
+            if(c>0)angle-=update;
+            else angle+=update;
+
+        }
+        else if(e.getKeyCode()==KeyEvent.VK_DOWN||e.getKeyChar()=='s'){
+            if(c>0)angle+=update;
+            else angle-=update;
+        }
+        else if(e.getKeyCode()==KeyEvent.VK_LEFT||e.getKeyChar()=='a'){
+            if(s>0)angle+=update;
+            else angle-=update;
+        }
+        else if(e.getKeyCode()==KeyEvent.VK_RIGHT||e.getKeyChar()=='d'){
+            if(s>0)angle-=update;
+            else angle+=update;
+        }
+        head.setAngle(angle);
+
+    }
 }

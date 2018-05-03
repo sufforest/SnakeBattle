@@ -73,5 +73,29 @@ public class FoodManager {
     public int nfood(){
         return foods.size();
     }
+
+
+    public Food getClosestFood(Snake snake){
+        Node head=snake.getHead();
+        double hx=head.getX();
+        double hy=head.getY();
+        Food choosen=null;
+        double d=width*width+height*height;
+        for(Food food:foods){
+            double fx=food.getX();
+            double fy=food.getY();
+            double curDistance=(fx-hx)*(fx-hx)+(fy-hy)*(fy-hy);
+            if(curDistance<d){
+                d=curDistance;
+                choosen=food;
+            }
+        }
+
+        if(choosen==null){
+            System.out.println("Random");
+            choosen=getRandomFood();
+        }
+        return choosen;
+    }
 }
 

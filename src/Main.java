@@ -4,8 +4,11 @@ public class Main {
     public static void main(String[] args) {
         GamePanel game = new GamePanel();
         JFrame frame = new JFrame();
+
+
         frame.add(game);
         frame.addMouseMotionListener(game);
+        frame.addKeyListener(game);
         game.setBounds(0, 30, 1000, 1000);
         frame.setSize(1000, 1000 + 30);
 

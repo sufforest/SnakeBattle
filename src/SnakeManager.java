@@ -38,6 +38,8 @@ public class SnakeManager {
         return snakes;
     }
 
+
+    //for ai snake
     public void setDirection(FoodManager foodManager) {
         for (int i = 0; i < snakes.size(); i++) {
             Snake snake = snakes.get(i);
@@ -45,7 +47,7 @@ public class SnakeManager {
                 AISnake aiSnake=(AISnake)snake;
                 Food target=aiSnake.getTarget();
                 if(target==null || !foodManager.contains(target)){
-                Food food=foodManager.getRandomFood();
+                Food food=foodManager.getClosestFood(aiSnake);
                 aiSnake.setDirection((int)food.getX(),(int)(food.getY()));
                 aiSnake.setTarget(food);
             }
@@ -91,8 +93,14 @@ public class SnakeManager {
 
     public void move(int n){
         for(Snake snake:snakes)
-            if(snake.isAlive())
-            snake.move(n);
+            if(snake.isAlive()) {
+                snake.move(n);
+                Node head=snake.getHead();
+                double hr=snake.getBodyWidth();
+                if(head.getX()+hr/2>width||head.getY()+hr/2>height||head.getX()<hr/2||head.getY()<hr/2)
+                    snake.setAlive(false);
+                    if(snake.isAI())snake.reborn(width,height);
+            }
     }
     public void paint(Graphics2D g){
         for(Snake snake:snakes)

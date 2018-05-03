@@ -13,8 +13,8 @@ import java.util.List;
 
 public class Snake {
 
-    public static final int DEFAULT_BODY_LENGTH = 50;
-    public static final int DEFAULT_BODY_WIDTH = 10;
+    public static final int DEFAULT_BODY_LENGTH = 100;
+    public static final int DEFAULT_BODY_WIDTH = 20;
 
     private LinkedList<Node> body;
     private boolean isAlive;
@@ -67,6 +67,8 @@ public class Snake {
         head.setAngle(angle);
     }
 
+
+
     //move n steps
     public void move(int n) {
         while (n > 0) {
@@ -95,8 +97,9 @@ public class Snake {
 
 
     //paint
+    //reverse order to avoid shadow
     public void paint(Graphics2D g) {
-        for (int i = 0; i < body.size(); ++i) {
+        for (int i = body.size()-1; i >=0; --i) {
 
             //only display certain nodes
             if (i % (bodyWidth) == 0 || i == body.size() - 1) {
