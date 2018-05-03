@@ -98,7 +98,7 @@ public class Snake {
         for (int i = 0; i < body.size(); ++i) {
 
             //only display certain nodes
-            if (i % (bodyWidth/3) == 0 || i == body.size() - 1) {
+            if (i % (bodyWidth) == 0 || i == body.size() - 1) {
                 Node node = body.get(i);
                 BufferedImage img;
 

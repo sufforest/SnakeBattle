@@ -27,19 +27,19 @@ public class Skin {
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
-        headimg.fillOval(60,20,20,20);
-        headimg.fillOval(60,60,20,20);
+        headimg.fillOval(60,20,10,10);
+        headimg.fillOval(60,60,10,10);
 
-        Graphics2D bodyimg = head.createGraphics();
-        headimg.setColor(color);
-        headimg.fillOval(0,0,100,100);
+        Graphics2D bodyimg = body.createGraphics();
+        bodyimg.setColor(color);
+        bodyimg.fillOval(0,0,100,100);
 
-        Graphics2D tailimg = head.createGraphics();
-        headimg.setColor(color);
-        headimg.fillOval(0,0,100,100);
+        Graphics2D tailimg = tail.createGraphics();
+        tailimg.setColor(color);
+        tailimg.fillOval(0,0,100,100);
 
-        headimg.setColor(Color.BLACK);
-        headimg.fillOval(40,40,20,20);
+        tailimg.setColor(Color.BLACK);
+        tailimg.fillOval(40,40,20,20);
 
     }
 
@@ -53,19 +53,19 @@ public class Skin {
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
-        headimg.fillOval(60,20,20,20);
-        headimg.fillOval(60,60,20,20);
+        headimg.fillOval(60,20,10,10);
+        headimg.fillOval(60,60,10,10);
 
-        Graphics2D bodyimg = head.createGraphics();
-        headimg.setColor(color);
-        headimg.fillOval(0,0,100,100);
+        Graphics2D bodyimg = body.createGraphics();
+        bodyimg.setColor(color);
+        bodyimg.fillOval(0,0,100,100);
 
-        Graphics2D tailimg = head.createGraphics();
-        headimg.setColor(color);
-        headimg.fillOval(0,0,100,100);
+        Graphics2D tailimg = tail.createGraphics();
+        tailimg.setColor(color);
+        tailimg.fillOval(0,0,100,100);
 
-        headimg.setColor(Color.BLACK);
-        headimg.fillOval(40,40,20,20);
+        tailimg.setColor(Color.BLACK);
+        tailimg.fillOval(40,40,20,20);
 
     }
 

@@ -12,7 +12,6 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
     public final static int HEIGHT = 2000;
     private Snake userSnake;
     private InfoManager infoManager;
-    BufferedImage gameMap = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     //mouse location
     private Integer x;
     private Integer y;
@@ -77,6 +76,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
 
         dx = (int) (ddx>maxX?maxX:ddx);
         dy = (int) (ddy>maxY?maxY:ddy);
+        BufferedImage gameMap = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         Graphics2D tg = gameMap.createGraphics();
         infoManager.paint(tg);
 

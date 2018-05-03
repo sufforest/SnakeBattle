@@ -23,7 +23,6 @@ public class FoodManager {
     //init some food on the given area
     public void init() {
         int nFood = width * height / 10000;
-        System.out.println("Food init\t"+nFood);
         for (int i = 0; i < nFood; ++i)
             foods.add(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
     }
