@@ -33,6 +33,9 @@ public class FoodManager {
             foods.add(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
     }
 
+    public void addFoods(List<Food> newfoods){
+        foods.addAll(newfoods);
+    }
     //check if food ate by snake
     //only need to check head
     public void check(Snake snake) {

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -157,4 +158,21 @@ public class Snake {
     public LinkedList<Node> getBody() {
         return body;
     }
+
+    public List<Food>die() {
+        setAlive(false);
+        List<Food> foods = new ArrayList<>();
+
+        for (int i = 0; i < body.size(); ++i) {
+
+            //only display certain nodes
+            if (i % (bodyWidth/2) == 0 || i == body.size() - 1) {
+                Node node = body.get(i);
+                Food newfood = new Food(node.getX(), node.getY(), (int) (bodyWidth/2));
+                foods.add(newfood);
+            }
+        }
+        return foods;
+    }
+
 }

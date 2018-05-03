@@ -16,7 +16,7 @@ public class InfoManager {
         height=Height;
         foodManager=new FoodManager(width,height);
         snakeManager=new SnakeManager(width,height);
-        timeManager=new TimeManager(10);
+        timeManager=new TimeManager(300);
 
     }
     public void init(){
@@ -32,7 +32,7 @@ public class InfoManager {
             List<Snake> snakes = snakeManager.getSnakes();
             for (int i = 0; i < snakes.size(); ++i)
                 foodManager.check(snakes.get(i));
-            snakeManager.check();
+            snakeManager.check(foodManager);
             snakeManager.setDirection(foodManager);
             snakeManager.move(2);
 

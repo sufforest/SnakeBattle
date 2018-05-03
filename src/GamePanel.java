@@ -12,6 +12,11 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
     public final static int HEIGHT = 2000;
     private Snake userSnake;
     private InfoManager infoManager;
+
+    //reborn count down
+
+    private TimeManager reborn;
+
     //mouse location
     private Integer x;
     private Integer y;
@@ -21,6 +26,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
     public static int dy=0;
 
     public GamePanel(){
+        reborn=null;
         userSnake = new Snake(WIDTH,HEIGHT);
         userSnake.setAI(false);
         infoManager = new InfoManager(WIDTH,HEIGHT);
@@ -36,6 +42,18 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
         while(infoManager.getCntDown()>0){
             infoManager.check();
             repaint();
+
+            //if die , add reborn thread
+            if(!userSnake.isAlive()){
+                if(reborn==null) {
+                    reborn = new TimeManager(5);
+                    reborn.start();
+                }
+                else if(reborn.getCntDown()==0){
+                    userSnake.reborn(WIDTH,HEIGHT);
+                    reborn=null;
+                }
+            }
             try {
                 Thread.sleep(20);
             }
@@ -47,6 +65,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
         Color currentColor=getGraphics().getColor();
         getGraphics().setColor(Color.lightGray);
         int score=userSnake.getBody().size();
+        if(!userSnake.isAlive() )score=0;
         getGraphics().clearRect(WIDTH/4-100,HEIGHT/4-50,200,100);
         getGraphics().setFont(new Font("TimesRoman", Font.PLAIN, 50));
         getGraphics().drawString("Final Length\t"+score,WIDTH/4-50,HEIGHT/4);
@@ -91,6 +110,10 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable{
         g.setColor(Color.lightGray);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 50));
         g.drawString(String.format("%02d", (infoManager.getCntDown() / 60)) + ":" + String.format("%02d", (infoManager.getCntDown() % 60)), WIDTH/4 - 50, 50);
+
+        if(!userSnake.isAlive()){
+            g.drawString(String.format("Wait\t%02d", (reborn.getCntDown())), WIDTH/4 - 50, HEIGHT/4);
+        }
         g.setFont(currentFont);
         g.setColor(currentColor);
 

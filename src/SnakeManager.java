@@ -51,26 +51,32 @@ public class SnakeManager {
             }
         }
     }}
-    public void check() {
+    public void check(FoodManager foodManager) {
         for (int i = 0; i < snakes.size(); i++) {
             Snake snake = snakes.get(i);
-            if ((!snake.isAI()) && snake.isAlive()) {
+            if (snake.isAlive()) {
                 Node head = snake.getHead();
                 double hr = snake.getBodyWidth() / 2;
                 double hx = head.getX() + hr;
                 double hy = head.getY() + hr;
-                for (int j = 0; j < snakes.size() && j != i; j++) {
+                for (int j = 0; j < snakes.size() ; j++) {
+                    if(j==i)continue;
                     Snake snake1 = snakes.get(j);
-                    if(!snake.isAlive()) continue;
+                    if(!snake1.isAlive()) continue;
                     double sr = snake1.getBodyWidth() / 2;
                     for (Node node : snake1.getBody()) {
                         double fx = node.getX();
                         double fy = node.getY();
                         if ((hr + sr) > Math.abs(fx - hx) && (hr + sr) > Math.abs(fy - hy)) {
-                            snake.setAlive(false);
+                            List<Food>newfs=snake.die();
+                            foodManager.addFoods(newfs);
+                            if(snake.isAI())snake.reborn(width,height);
                             if (node == snake1.getHead())
-                                snake1.setAlive(false);
-                        }
+                            {
+                                List<Food>newfs1=snake1.die();
+                                foodManager.addFoods(newfs1);
+                                if(snake1.isAI())snake1.reborn(width,height);
+                        }}
 
                     }
                 }
