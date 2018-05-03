@@ -16,6 +16,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
     private Snake userSnake;
     private InfoManager infoManager;
 
+
     //reborn count down
 
     private TimeManager reborn;
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
     public GamePanel() {
         reborn = null;
         userSnake = new Snake(WIDTH, HEIGHT);
+        userSnake.setName("JAVA LAB");
         userSnake.setAI(false);
         infoManager = new InfoManager(WIDTH, HEIGHT);
         infoManager.init();
@@ -101,6 +103,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
         dy = (int) (ddy>maxY?maxY:ddy);
         BufferedImage gameMap = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         Graphics2D tg = gameMap.createGraphics();
+        drawBackGround(tg);
         infoManager.paint(tg);
 
 
@@ -146,7 +149,10 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
 
     @Override
     public void keyTyped(KeyEvent e){
+        if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
 
+
+        }
     }
 
 
@@ -181,5 +187,18 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
         }
         head.setAngle(angle);
 
+    }
+
+    public void drawBackGround(Graphics2D g2){
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0,0,WIDTH,HEIGHT);
+        g2.setStroke(new BasicStroke(10, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+        g2.setColor(new Color(153,153,153));
+        for (int i = 0; i < WIDTH; i += 100) {
+           g2.drawLine(i,0,i,HEIGHT);
+        }
+        for (int i = 0; i < HEIGHT; i += 100) {
+            g2.drawLine(0,i,WIDTH,i);
+        }
     }
 }

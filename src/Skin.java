@@ -24,28 +24,31 @@ public class Skin {
         tail=new BufferedImage(100, 100,BufferedImage.TYPE_INT_RGB);
 
         Graphics2D headimg = head.createGraphics();
-        headimg.setColor(new Color(0,0,0,0));
-        headimg.fillRect(0,0,100,100);
+        head = headimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        headimg.dispose();
+        headimg = head.createGraphics();
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
-        headimg.fillOval(60,20,10,10);
-        headimg.fillOval(60,60,10,10);
+        headimg.fillOval(60,20,20,20);
+        headimg.fillOval(60,60,20,20);
 
         Graphics2D bodyimg = body.createGraphics();
-        bodyimg.setColor(new Color(0,0,0,0));
-        bodyimg.fillRect(0,0,100,100);
+        body = bodyimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        bodyimg.dispose();
+        bodyimg = body.createGraphics();
         bodyimg.setColor(color);
         bodyimg.fillOval(0,0,100,100);
 
         Graphics2D tailimg = tail.createGraphics();
-        tailimg.setColor(new Color(0,0,0,0));
-        tailimg.fillRect(0,0,100,100);
+        tail=tailimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        tailimg.dispose();
+        tailimg=tail.createGraphics();
         tailimg.setColor(color);
-        tailimg.fillOval(0,0,100,100);
+        tailimg.fillOval(0,25,100,50);
 
-        tailimg.setColor(Color.BLACK);
-        tailimg.fillOval(40,40,20,20);
+        //tailimg.setColor(Color.BLACK);
+        //tailimg.fillOval(40,40,40,20);
 
     }
 
@@ -56,31 +59,32 @@ public class Skin {
         tail=new BufferedImage(100, 100,BufferedImage.TYPE_INT_RGB);
 
         Graphics2D headimg = head.createGraphics();
-        headimg.setColor(new Color(0,0,0,0));
-        headimg.fillRect(0,0,100,100);
+
+        head = headimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        headimg.dispose();
+        headimg = head.createGraphics();
         headimg.setColor(color);
         headimg.fillOval(0,0,100,100);
         headimg.setColor(Color.BLACK);
-        headimg.fillOval(60,20,10,10);
-        headimg.fillOval(60,60,10,10);
+        headimg.fillOval(60,20,20,20);
+        headimg.fillOval(60,60,20,20);
 
         Graphics2D bodyimg = body.createGraphics();
-        bodyimg.setColor(new Color(0,0,0,0));
-        bodyimg.fillRect(0,0,100,100);
+        body = bodyimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        bodyimg.dispose();
+        bodyimg = body.createGraphics();
         bodyimg.setColor(color);
         bodyimg.fillOval(0,0,100,100);
 
         Graphics2D tailimg = tail.createGraphics();
-
-        tailimg.setColor(new Color(0,0,0,0));
-        tailimg.fillRect(0,0,100,100);
-
+        tail=tailimg.getDeviceConfiguration().createCompatibleImage(100, 100, Transparency.TRANSLUCENT);
+        tailimg.dispose();
+        tailimg=tail.createGraphics();
         tailimg.setColor(color);
-        tailimg.fillOval(0,0,100,100);
+        tailimg.fillOval(0,25,100,50);
 
-        tailimg.setColor(Color.BLACK);
-        tailimg.fillOval(40,40,20,20);
-
+        //tailimg.setColor(Color.BLACK);
+        //tailimg.fillOval(0,40,40,20);
     }
 
     public BufferedImage getHead() {

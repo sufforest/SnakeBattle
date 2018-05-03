@@ -42,7 +42,7 @@ public class Food {
 
     public void paint(Graphics2D g){
         Color tmp=g.getColor();
-        g.setColor(Color.RED);
+        g.setColor(Color.pink);
         g.fillOval((int)x,(int)y,size,size);
         g.setColor(tmp);
     }

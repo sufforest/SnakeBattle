@@ -36,6 +36,7 @@ public class InfoManager {
             snakeManager.setDirection(foodManager);
             snakeManager.move(2);
 
+            snakeManager.reborn();
 
         }
     }

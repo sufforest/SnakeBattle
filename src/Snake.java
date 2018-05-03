@@ -2,7 +2,7 @@
  * Created by zywang on 1/5/2018.
  */
 
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.security.SecureRandom;
@@ -24,11 +24,13 @@ public class Snake {
     private Skin skin;
     private SecureRandom r = new SecureRandom();
 
+    private String name;
 
     //initialization on the top-left
     public Snake() {
         this.isAlive = true;
         this.isAI = true;
+        name=null;
         skin=new Skin();
         length = DEFAULT_BODY_LENGTH;
         bodyWidth = DEFAULT_BODY_WIDTH;
@@ -40,8 +42,17 @@ public class Snake {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     //random initialization on map
     public Snake(int width, int height) {
+        name=null;
         this.isAlive = true;
         this.isAI = true;
         skin=new Skin();
@@ -53,6 +64,7 @@ public class Snake {
         for (int i = 1; i < length; i++) {
             body.add(new Node(x, y + i, 0));
         }
+
     }
 
 
@@ -89,6 +101,7 @@ public class Snake {
 
     public void eat(int bonus) {
         length += bonus;
+
     }
 
     public Node getHead() {
@@ -108,6 +121,14 @@ public class Snake {
 
                 if (i == 0) {
                     img = skin.getHead();
+
+                    //add name near head
+                    if(getName()!=null){
+                        g.setColor(Color.black);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, (int)getBodyWidth()));
+                        g.drawString(getName(),(int)(getHead().getX()-getBodyWidth()),(int)(getHead().getY()-getBodyWidth()/2));
+                    }
+
                 } else if (i == body.size() - 1) {
                     img = skin.getTail();
                 } else {
@@ -121,12 +142,13 @@ public class Snake {
                 affineTransform.rotate(node.getAngle(), img.getWidth() / 2, img.getHeight() / 2);
                 g.drawImage(img, affineTransform, null);
             }
+
         }
+
     }
 
     public void reborn(int width, int height) {
         this.isAlive = true;
-        this.isAI = false;
         length = DEFAULT_BODY_LENGTH;
         bodyWidth = DEFAULT_BODY_WIDTH;
         this.body = new LinkedList<Node>();
@@ -169,13 +191,20 @@ public class Snake {
         for (int i = 0; i < body.size(); ++i) {
 
             //only display certain nodes
-            if (i % (bodyWidth/2) == 0 || i == body.size() - 1) {
+            if (i % (bodyWidth) == 0 || i == body.size() - 1) {
                 Node node = body.get(i);
-                Food newfood = new Food(node.getX(), node.getY(), (int) (bodyWidth/2));
+                Food newfood = new Food(node.getX(), node.getY(), r.nextInt((int) (bodyWidth/4)));
                 foods.add(newfood);
             }
         }
         return foods;
     }
 
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 }

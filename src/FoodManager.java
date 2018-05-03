@@ -13,7 +13,9 @@ public class FoodManager {
     int width;
     int height;
 
+    int capacity;
     public FoodManager(int Width, int Height) {
+        capacity=width*height/10000;
         foods = new ArrayList<>();
         random = new SecureRandom();
         width=Width;
@@ -52,8 +54,9 @@ public class FoodManager {
                 snake.eat(food.getBonus());
                 foods.remove(i);
 
-                //add a food on map
-                product(1);
+                //check the number and add a food on map
+                if(getFoodNumber()<capacity)
+                    product(1);
             }
         }
     }
@@ -69,8 +72,10 @@ public class FoodManager {
     public void paint(Graphics2D g){
         for(Food food:foods)
             food.paint(g);
+        //for (int i = 0; i < foods.size(); ++i)
+            //foods.get(i).paint(g);
     }
-    public int nfood(){
+    public int getFoodNumber(){
         return foods.size();
     }
 
