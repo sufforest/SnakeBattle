@@ -22,7 +22,7 @@ public class Food {
         bonus=Bonus;
 
         //simple assignment
-        size=bonus;
+        size=bonus*2;
     }
 
     public int getSize() {

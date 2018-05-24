@@ -121,6 +121,11 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
         if(!userSnake.isAlive()){
             g.drawString(String.format("Wait\t%02d", (reborn.getCntDown())), WIDTH/4 - 50, HEIGHT/4);
         }
+        if(userSnake.isAlive()) {
+            g.setFont(new Font("TimesRoman", Font.PLAIN, 25));
+            g.drawString("Length :" + String.format("%04d", (userSnake.getLength())), 0, 50);
+        }
+
         g.setFont(currentFont);
         g.setColor(currentColor);
 
@@ -158,11 +163,20 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
 
     @Override
     public void keyReleased(KeyEvent e){
+        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            userSnake.setSpeed(1);
 
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e){
+        //space to speedup
+        if(e.getKeyCode()==KeyEvent.VK_SPACE){
+            userSnake.setSpeed(2);
+
+        }
+        //direction control
         Node head=userSnake.getHead();
         double angle=head.getAngle();
         double s=Math.sin(angle);

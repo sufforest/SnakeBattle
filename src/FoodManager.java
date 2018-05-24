@@ -70,10 +70,10 @@ public class FoodManager {
         return foods.contains(food);
     }
     public void paint(Graphics2D g){
-        for(Food food:foods)
-            food.paint(g);
-        //for (int i = 0; i < foods.size(); ++i)
-            //foods.get(i).paint(g);
+        //for(Food food:foods)
+          //  food.paint(g);
+        for (int i = 0; i < foods.size(); ++i)
+            foods.get(i).paint(g);
     }
     public int getFoodNumber(){
         return foods.size();

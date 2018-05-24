@@ -25,7 +25,7 @@ public class SnakeManager {
     public void init() {
         int n = width*height/1000000*4;
         for (int i = 0; i < n; ++i)
-            snakes.add(new AISnake(width, height));
+            snakes.add(new AISnake(width, height,this));
     }
 
 

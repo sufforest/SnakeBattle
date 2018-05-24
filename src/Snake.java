@@ -23,9 +23,8 @@ public class Snake {
     private double bodyWidth;
     private Skin skin;
     private SecureRandom r = new SecureRandom();
-
     private String name;
-
+    private double speed=1;
     //initialization on the top-left
     public Snake() {
         this.isAlive = true;
@@ -80,15 +79,38 @@ public class Snake {
     }
 
 
+    public void setDirection(Double angle) {
+        double a = Math.atan2(angle, 1);
+        getHead().setAngle(a);
+    }
+
 
     //move n steps
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
     public void move(int n) {
+        if(speed>1 && body.size()>DEFAULT_BODY_LENGTH) {
+            n = (int) (n * speed);
+        }
         while (n > 0) {
+
+            if(speed>1 && body.size()>DEFAULT_BODY_LENGTH){
+                body.removeLast();
+                length--;
+            }
 
             //no add on length
             if (length == body.size()) {
                 body.removeLast();
             }
+
             Node newHead = new Node();
             Node curHead = body.getFirst();
             newHead.setX(curHead.getX() + Math.cos(curHead.getAngle()));
@@ -188,7 +210,7 @@ public class Snake {
         setAlive(false);
         List<Food> foods = new ArrayList<>();
 
-        for (int i = 0; i < body.size(); ++i) {
+        for (int i = 0; i < body.size(); i=i+2) {
 
             //only display certain nodes
             if (i % (bodyWidth) == 0 || i == body.size() - 1) {
