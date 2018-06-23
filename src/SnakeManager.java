@@ -66,6 +66,7 @@ public class SnakeManager {
     public void check(FoodManager foodManager) {
         for (int i = 0; i < snakes.size(); i++) {
             Snake snake = snakes.get(i);
+            snake.updateAlive();
             if (snake.isAlive()) {
                 Node head = snake.getHead();
                 double hr = snake.getBodyWidth() / 2;

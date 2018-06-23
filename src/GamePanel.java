@@ -11,15 +11,15 @@ import java.awt.image.BufferedImage;
  * Created by zywang on 3/5/2018.
  */
 public class GamePanel extends JPanel implements MouseMotionListener,Runnable,KeyListener{
-    public final static int WIDTH = 2000;
-    public final static int HEIGHT = 2000;
+    public  int WIDTH = 2000;
+    public  int HEIGHT = 2000;
     private Snake userSnake;
     private InfoManager infoManager;
 
 
     //reborn count down
 
-    private TimeManager reborn;
+    //private TimeManager reborn;
 
     //mouse location
     private Integer x;
@@ -29,8 +29,18 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
     public static int dx=0;
     public static int dy=0;
 
+    public GamePanel(String username) {
+        //reborn = null;
+        userSnake = new Snake(WIDTH, HEIGHT);
+        userSnake.setName(username);
+        userSnake.setAI(false);
+        infoManager = new InfoManager(WIDTH, HEIGHT);
+        infoManager.init();
+        infoManager.join(userSnake);
+    }
+
     public GamePanel() {
-        reborn = null;
+        //reborn = null;
         userSnake = new Snake(WIDTH, HEIGHT);
         userSnake.setName("JAVA LAB");
         userSnake.setAI(false);
@@ -38,6 +48,15 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
         infoManager.init();
         infoManager.join(userSnake);
     }
+
+    public GamePanel(Snake user,InfoManager info) {
+        //reborn = null;
+        userSnake = user;
+        userSnake.setName("User");
+        userSnake.setAI(false);
+        infoManager =info;
+    }
+
 
 
 
@@ -50,6 +69,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
             repaint();
 
             //if die , add reborn thread
+            /*
             if(!userSnake.isAlive()){
                 if(reborn==null) {
                     reborn = new TimeManager(5);
@@ -60,6 +80,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
                     reborn=null;
                 }
             }
+            */
             try {
                 Thread.sleep(20);
             }
@@ -119,7 +140,7 @@ public class GamePanel extends JPanel implements MouseMotionListener,Runnable,Ke
         g.drawString(String.format("%02d", (infoManager.getCntDown() / 60)) + ":" + String.format("%02d", (infoManager.getCntDown() % 60)), WIDTH/4 - 50, 50);
 
         if(!userSnake.isAlive()){
-            g.drawString(String.format("Wait\t%02d", (reborn.getCntDown())), WIDTH/4 - 50, HEIGHT/4);
+            g.drawString(String.format("Wait\t%02d", (userSnake.getRebornCnt())), WIDTH/4 - 50, HEIGHT/4);
         }
         if(userSnake.isAlive()) {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 25));

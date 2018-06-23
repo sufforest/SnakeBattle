@@ -16,6 +16,10 @@ public class Snake {
     public static final int DEFAULT_BODY_LENGTH = 100;
     public static final int DEFAULT_BODY_WIDTH = 20;
 
+    public static final int WIDTH = 2000;
+    public static final int HEIGHT = 2000;
+
+
     private LinkedList<Node> body;
     private boolean isAlive;
     private boolean isAI;
@@ -24,13 +28,16 @@ public class Snake {
     private Skin skin;
     private SecureRandom r = new SecureRandom();
     private String name;
-    private double speed=1;
+    private double speed = 1;
+    private TimeManager rebornCnt;
+
     //initialization on the top-left
     public Snake() {
         this.isAlive = true;
         this.isAI = true;
-        name=null;
-        skin=new Skin();
+        rebornCnt = null;
+        name = null;
+        skin = new Skin();
         length = DEFAULT_BODY_LENGTH;
         bodyWidth = DEFAULT_BODY_WIDTH;
         this.body = new LinkedList<Node>();
@@ -51,10 +58,10 @@ public class Snake {
 
     //random initialization on map
     public Snake(int width, int height) {
-        name=null;
+        name = null;
         this.isAlive = true;
         this.isAI = true;
-        skin=new Skin();
+        skin = new Skin();
         length = DEFAULT_BODY_LENGTH;
         bodyWidth = DEFAULT_BODY_WIDTH;
         this.body = new LinkedList<Node>();
@@ -96,12 +103,12 @@ public class Snake {
     }
 
     public void move(int n) {
-        if(speed>1 && body.size()>DEFAULT_BODY_LENGTH) {
+        if (speed > 1 && body.size() > DEFAULT_BODY_LENGTH) {
             n = (int) (n * speed);
         }
         while (n > 0) {
 
-            if(speed>1 && body.size()>DEFAULT_BODY_LENGTH){
+            if (speed > 1 && body.size() > DEFAULT_BODY_LENGTH) {
                 body.removeLast();
                 length--;
             }
@@ -134,7 +141,7 @@ public class Snake {
     //paint
     //reverse order to avoid shadow
     public void paint(Graphics2D g) {
-        for (int i = body.size()-1; i >=0; --i) {
+        for (int i = body.size() - 1; i >= 0; --i) {
 
             //only display certain nodes
             if (i % (bodyWidth) == 0 || i == body.size() - 1) {
@@ -145,10 +152,10 @@ public class Snake {
                     img = skin.getHead();
 
                     //add name near head
-                    if(getName()!=null){
+                    if (getName() != null) {
                         g.setColor(Color.black);
-                        g.setFont(new Font("TimesRoman", Font.BOLD, (int)getBodyWidth()));
-                        g.drawString(getName(),(int)(getHead().getX()-getBodyWidth()),(int)(getHead().getY()-getBodyWidth()/2));
+                        g.setFont(new Font("TimesRoman", Font.BOLD, (int) getBodyWidth()));
+                        g.drawString(getName(), (int) (getHead().getX() - getBodyWidth()), (int) (getHead().getY() - getBodyWidth() / 2));
                     }
 
                 } else if (i == body.size() - 1) {
@@ -181,6 +188,23 @@ public class Snake {
         }
     }
 
+    public int getRebornCnt(){
+        if(rebornCnt !=null)
+            return rebornCnt.getCntDown();
+        return 0;
+    }
+    public void updateAlive() {
+        if (!isAlive()) {
+            if (rebornCnt == null) {
+                rebornCnt = new TimeManager(5);
+                rebornCnt.start();
+            } else if (rebornCnt.getCntDown() == 0) {
+                reborn(WIDTH, HEIGHT);
+                rebornCnt = null;
+            }
+        }
+        return;
+    }
 
     public double getBodyWidth() {
         return bodyWidth;
@@ -206,16 +230,16 @@ public class Snake {
         return body;
     }
 
-    public List<Food>die() {
+    public List<Food> die() {
         setAlive(false);
         List<Food> foods = new ArrayList<>();
 
-        for (int i = 0; i < body.size(); i=i+2) {
+        for (int i = 0; i < body.size(); i = i + 2) {
 
             //only display certain nodes
             if (i % (bodyWidth) == 0 || i == body.size() - 1) {
                 Node node = body.get(i);
-                Food newfood = new Food(node.getX(), node.getY(), r.nextInt((int) (bodyWidth/4)));
+                Food newfood = new Food(node.getX(), node.getY(), r.nextInt((int) (bodyWidth / 4)));
                 foods.add(newfood);
             }
         }
