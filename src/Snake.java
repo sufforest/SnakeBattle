@@ -5,13 +5,14 @@
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class Snake {
+public class Snake implements Serializable {
 
     public static final int DEFAULT_BODY_LENGTH = 100;
     public static final int DEFAULT_BODY_WIDTH = 20;
@@ -56,12 +57,37 @@ public class Snake {
         this.name = name;
     }
 
+    public static int getDefaultBodyLength() {
+        return DEFAULT_BODY_LENGTH;
+    }
+
+    public static int getDefaultBodyWidth() {
+        return DEFAULT_BODY_WIDTH;
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public SecureRandom getR() {
+        return r;
+    }
+
     //random initialization on map
     public Snake(int width, int height) {
-        name = null;
+        name = "UserSNake";
         this.isAlive = true;
         this.isAI = true;
         skin = new Skin();
+
         length = DEFAULT_BODY_LENGTH;
         bodyWidth = DEFAULT_BODY_WIDTH;
         this.body = new LinkedList<Node>();
@@ -73,6 +99,36 @@ public class Snake {
 
     }
 
+    public Snake(int width, int height,boolean isAI) {
+        name = "UserSNake";
+        this.isAlive = true;
+        this.isAI = isAI;
+        skin = new Skin();
+
+        length = DEFAULT_BODY_LENGTH;
+        bodyWidth = DEFAULT_BODY_WIDTH;
+        this.body = new LinkedList<Node>();
+        int x = r.nextInt(width);
+        int y = r.nextInt(height);
+        for (int i = 1; i < length; i++) {
+            body.add(new Node(x, y + i, 0));
+        }
+
+    }
+
+    //
+    public Snake(int x,int y,boolean isAI,String name){
+        this.isAlive = true;
+        this.isAI = isAI;
+        skin = new Skin();
+        this.name=name;
+        length = DEFAULT_BODY_LENGTH;
+        bodyWidth = DEFAULT_BODY_WIDTH;
+        this.body = new LinkedList<Node>();
+        for (int i = 1; i < length; i++) {
+            body.add(new Node(x, y + i, 0));
+        }
+    }
 
     //x y is the relative coord
     public void setDirection(int x, int y) {
@@ -103,6 +159,7 @@ public class Snake {
     }
 
     public void move(int n) {
+
         if (speed > 1 && body.size() > DEFAULT_BODY_LENGTH) {
             n = (int) (n * speed);
         }
@@ -188,12 +245,25 @@ public class Snake {
         }
     }
 
+    public void reborn(int x, int y,boolean fix) {
+        this.isAlive = true;
+        length = DEFAULT_BODY_LENGTH;
+        bodyWidth = DEFAULT_BODY_WIDTH;
+        if(fix) {
+            this.body = new LinkedList<Node>();
+            for (int i = 1; i < length; i++) {
+                body.add(new Node(x, y + i, 0));
+            }
+        }
+    }
+
+
     public int getRebornCnt(){
         if(rebornCnt !=null)
             return rebornCnt.getCntDown();
         return 0;
     }
-    public void updateAlive() {
+    public boolean updateAlive() {
         if (!isAlive()) {
             if (rebornCnt == null) {
                 rebornCnt = new TimeManager(5);
@@ -201,9 +271,10 @@ public class Snake {
             } else if (rebornCnt.getCntDown() == 0) {
                 reborn(WIDTH, HEIGHT);
                 rebornCnt = null;
+                return true;
             }
         }
-        return;
+        return false;
     }
 
     public double getBodyWidth() {

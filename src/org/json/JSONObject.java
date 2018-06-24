@@ -2357,4 +2357,41 @@ public class JSONObject {
         }
         return results;
     }
+
+    public <T> T toJavaBean(Class<T> javaBeanClazz)
+            throws JSONException {
+        Method[] beanMethods = javaBeanClazz.getDeclaredMethods();
+        T javaBean = null;
+
+        try {
+            javaBean = javaBeanClazz.newInstance();
+        } catch (Exception e){
+            throw new JSONException("Can not create a instance of Class "
+                    + javaBeanClazz.getName() + ".");
+        }
+        for (Method method : beanMethods)
+        {
+            if (method.getName().startsWith("set"))
+            {
+                String field = method.getName();
+                field = field.substring(field.indexOf("set") + 3);
+                field = field.toLowerCase().charAt(0) + field.substring(1);
+                //ignore the null value exception, add by y.t. 2015.03.10
+                if (map.get(field)==null)
+                {
+                    continue;
+                }
+                try {
+                    method.invoke(javaBean, new Object[] {map.get(field)});
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    throw new JSONException("Can not find property"
+                            + " setter for field \"" + field
+                            + "\" in Class \"" + javaBeanClazz.getName()
+                            + "\".");
+                }
+            }
+        }
+        return javaBean;
+    }
 }

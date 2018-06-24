@@ -9,7 +9,6 @@ import org.json.JSONObject;
 public class ClientListener extends Thread {
     private GameClient client;
     private GameRoom room;
-    private String message;
 
     public ClientListener(GameClient client, GameRoom room) {
 
@@ -19,16 +18,53 @@ public class ClientListener extends Thread {
 
     public void run() {
         try {
-            while ((message = client.getInput().readLine()) != null) {
-                JSONObject jmsg = new JSONObject(message);
-                //parser jmsg
-                if(room.isHaveStarted()) {
-                    if (jmsg.get("type").equals("move")) {
-                        double angle = jmsg.getDouble("angle");
+            while (true) {
+                String message = client.getInput().readLine();
+                if (message != null) {
+                    System.out.println(message);
+                    JSONObject jmsg = new JSONObject(message);
+                    //parser jmsg
 
+                    if (room.isHaveStarted()) {
+                        if (jmsg.getString("type").equals("DIRECTION")) {
+                            double angle = jmsg.getDouble("angle");
+                            room.setAngle(client,angle);
+                            System.out.println("set angle");
+                        }
+
+                        if(jmsg.getString("type").equals("SNAKE")){
+                            if(jmsg.getString("op").equals("reborn")){
+                                InfoManager infoManager= room.getInfoManager();
+                                String name=jmsg.getString("name");
+                                for(Snake snake:infoManager.getSnakes()){
+                                        if(snake.getName().equals(name)){
+                                            snake.reborn(jmsg.getInt("x"),jmsg.getInt("y"),true);
+                                            break;
+                                        }
+                                }
+                                room.sendAll(jmsg.toString());
+                            }
+                        }
+                    } else {
+                        if (jmsg.getString("type").equals("ROOM")) {
+                            if (jmsg.getBoolean("status")) {
+                                if (client == room.getHost()) {
+                                    if (room.allReady()) {
+                                        room.startGame();
+                                    }
+                                } else {
+                                    JSONObject jresponse = new JSONObject();
+                                    jresponse.put("type", "READY");
+                                    jresponse.put("name", client.getNickname());
+                                    client.setReady(true);
+                                    room.sendAll(jresponse.toString());
+                                }
+                            }
+                        }
                     }
                 }
             }
+
         } catch (Exception e) {
         }
 

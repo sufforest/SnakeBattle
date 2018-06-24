@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Created by zywang on 3/5/2018.
  */
-public class TimeManager implements Runnable {
+public class TimeManager implements Runnable, Serializable {
     private Thread t;
     private int cntDown;
 

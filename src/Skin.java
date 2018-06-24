@@ -2,12 +2,13 @@
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.security.SecureRandom;
 
 /**
  * Created by zywang on 3/5/2018.
  */
-public class Skin {
+public class Skin implements Serializable {
     public BufferedImage head;
     public BufferedImage body;
     public BufferedImage tail;

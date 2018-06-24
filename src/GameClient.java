@@ -12,6 +12,7 @@ public class GameClient {
     private BufferedWriter out;
     private boolean host; // to start a game
     private String nickname;
+    private boolean ready=false;
 
     public GameClient(Socket s, BufferedReader i, BufferedWriter o, boolean h, String name) {
 
@@ -50,5 +51,17 @@ public class GameClient {
             out.close();
         }
         catch(Exception e) {}
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public Socket getClientSocket() {
+        return clientSocket;
     }
 }

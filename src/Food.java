@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Created by zywang on 1/5/2018.
  */
-public class Food {
+public class Food implements Serializable {
 
     public static final int DEFAULT_BONUS=10;
 

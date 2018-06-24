@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 
 //Forward a random food position
-public class AISnake extends Snake {
+public class AISnake extends Snake  implements Serializable {
     private Food target;
     public static int MaxLength = 400;
     public static int MAX_ESCAPE = 10;

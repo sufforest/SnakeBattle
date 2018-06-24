@@ -69,7 +69,9 @@ public class TitlePanel extends JPanel implements ActionListener {
             Thread t = new Thread(game);
             t.start();
         } else if (e.getSource() == multiplayer) {
-            JOptionPane.showInputDialog("Enter room number");
+            String sn=JOptionPane.showInputDialog("Enter room number");
+            int room_id=Integer.parseInt(sn);
+            enterRoom(room_id);
 
         }
     }
@@ -77,6 +79,7 @@ public class TitlePanel extends JPanel implements ActionListener {
     void enterRoom(int room_id) {
         try {
             server = new Socket("localhost", 8848);
+            System.out.println("Connected");
             out = new BufferedWriter(new OutputStreamWriter(server.getOutputStream()));
             in = new BufferedReader(new InputStreamReader(server.getInputStream()));
 
@@ -87,17 +90,27 @@ public class TitlePanel extends JPanel implements ActionListener {
             jmsg.put("room",room_id);
 
             out.write(jmsg.toString()+"\n");
-            JSONObject ret = new JSONObject(in.readLine());
-            if(!ret.getBoolean("status")){
-                String msg=ret.getString("msg");
-                JOptionPane.showMessageDialog(null,msg);
-            }
-            else {
-                frame.remove(this);
-                RoomPanel roomPanel=new RoomPanel(out,room_id);
-                frame.add(roomPanel);
-                new Thread(new ServerListener(roomPanel, in)).start();
-
+            out.flush();
+            while(true) {
+                String string=in.readLine();
+                if (string != null) {
+                    JSONObject ret = new JSONObject(string);
+                    if (!ret.getBoolean("status")) {
+                        String msg = ret.getString("msg");
+                        JOptionPane.showMessageDialog(null, msg);
+                        break;
+                    } else {
+                        System.out.println("Enter Group");
+                        frame.remove(this);
+                        RoomPanel roomPanel = new RoomPanel(out, room_id, nickname.getText(), frame);
+                        frame.add(roomPanel);
+                        frame.revalidate();
+                        frame.repaint();
+                        frame.setSize(600, 300);
+                        new Thread(new ServerListener(roomPanel, in,server)).start();
+                        break;
+                    }
+                }
             }
         }
         catch(Exception e) {}

@@ -1,4 +1,8 @@
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.io.IOException;
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +10,12 @@ import java.util.List;
 /**
  * Created by zywang on 1/5/2018.
  */
-public class FoodManager {
+public class FoodManager implements Serializable{
     private List<Food> foods;
     private SecureRandom random;
     private Thread t;
+    private String mode;
+    private ArrayList<GameClient> players=null;
     int width;
     int height;
 
@@ -29,14 +35,24 @@ public class FoodManager {
             foods.add(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
     }
 
+    public void init(String mode) {
+        this.mode=mode;
+    }
+
+    public void init(String mode,ArrayList<GameClient> players){
+        this.players=players;
+        this.mode=mode;
+        for (int i = 0; i < 10; ++i)
+            addFood(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
+    }
 
     public void product(int n) {
         for (int i = 0; i < n; ++i)
-            foods.add(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
+            addFood(new Food(random.nextDouble() * width, random.nextDouble() * height, random.nextInt(Food.DEFAULT_BONUS) + 1));
     }
 
     public void addFoods(List<Food> newfoods){
-        foods.addAll(newfoods);
+        for(Food food:newfoods)addFood(food);
     }
     //check if food ate by snake
     //only need to check head
@@ -52,7 +68,10 @@ public class FoodManager {
             double fy = food.getY() + fr;
             if ((hr + fr) > Math.abs(fx - hx) && (hr + fr) > Math.abs(fy - hy)) {
                 snake.eat(food.getBonus());
-                foods.remove(i);
+                if(players!=null){
+                    sendEAT(food,snake.getName());
+                }
+                removeFood(food);
 
                 //check the number and add a food on map
                 if(getFoodNumber()<capacity)
@@ -101,6 +120,56 @@ public class FoodManager {
             choosen=getRandomFood();
         }
         return choosen;
+    }
+
+    public void addFood(Food food){
+        foods.add(food);
+        if(players!=null){
+            sendFood(food,"ADD");
+        }
+    }
+    public void removeFood(Food food){
+        foods.remove(food);
+        if(players!=null){
+            sendFood(food,"REMOVE");
+        }
+    }
+
+    public void sendFood(Food food,String op) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("type", "FOOD");
+            jsonObject.put("op", op);
+            jsonObject.put("x", food.getX());
+            jsonObject.put("y", food.getY());
+            jsonObject.put("bonus", food.getBonus());
+            //System.out.println(jsonObject.toString());
+            for (GameClient p : players) {
+                p.getOutput().write(jsonObject.toString() + "\n");
+                p.getOutput().flush();
+            }
+        }catch (IOException e){}
+    }
+
+    public void sendEAT(Food food,String name) {
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("type", "FOOD");
+            jsonObject.put("op", "EAT");
+            jsonObject.put("food", food.getBonus());
+            jsonObject.put("name",name);
+            //System.out.println(jsonObject.toString());
+            for (GameClient p : players) {
+                p.getOutput().write(jsonObject.toString() + "\n");
+                p.getOutput().flush();
+            }
+        }catch (IOException e){}
+    }
+
+    public List<Food> getFoods() {
+        return foods;
     }
 }
 

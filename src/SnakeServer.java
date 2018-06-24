@@ -1,4 +1,5 @@
 import org.json.JSONObject;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -37,12 +38,12 @@ public class SnakeServer implements Runnable {
                 Socket socket = serverSocket.accept();
                 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+                System.out.println("Incoming Socket "+socket.getInetAddress());
                 JSONObject jmsg = new JSONObject(in.readLine());
                 if (jmsg.get("type").equals("CONNECT")) {
                     String nickname = jmsg.getString("name");
                     int room_id = jmsg.getInt("room");
-                    System.out.println(nickname + "wants to enter room " + room_id);
+                    System.out.println(nickname + " wants to enter room " + room_id);
 
 
                     if (rooms.size() > 0) {
@@ -56,18 +57,22 @@ public class SnakeServer implements Runnable {
                                     feedback.put("status", false);
                                     feedback.put("msg", "Room is full");
                                     out.write(feedback.toString() + "\n");
+                                    System.out.println("Room "+room_id+" is full");
                                 } else if (room.isHaveStarted()) {
                                     JSONObject feedback = new JSONObject();
                                     feedback.put("status", false);
                                     feedback.put("type", "ENTER");
                                     feedback.put("msg", "Game has started");
                                     out.write(feedback.toString() + "\n");
+                                    System.out.println("Room "+room_id+" has started a game");
+
                                 } else {
                                     JSONObject feedback = new JSONObject();
                                     feedback.put("status", true);
                                     feedback.put("type", "ENTER");
                                     out.write(feedback.toString() + "\n");
                                     room.addClient(new GameClient(socket, in, out, false, nickname));
+
                                 }
                                 break;
                             }
@@ -86,11 +91,14 @@ public class SnakeServer implements Runnable {
                         feedback.put("status", true);
                         feedback.put("type", "ENTER");
                         out.write(feedback.toString() + "\n");
+                        System.out.println("New room: "+room_id);
                         createRoom(new GameClient(socket, in, out, false, nickname), room_id);
+
                     }
                 }
             }
         } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
@@ -98,6 +106,7 @@ public class SnakeServer implements Runnable {
     void createRoom(GameClient client, int id) {
         // Add a new game lobby & add p to the lobby
         GameRoom room = new GameRoom(id, client);
+        rooms.add(room);
     }
 
     public static void main(String[] args) {
